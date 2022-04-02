@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController // @Controller + @ResponseBody
 @RequiredArgsConstructor
 @RequestMapping("/books")
@@ -21,8 +23,19 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BookDto createBook(@RequestBody BookDto bookDto) {
+    public BookDto createBook(@Valid @RequestBody BookDto bookDto) {
         return bookCrudService.createBook(bookDto);
     }
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@PathVariable Long id, @Valid @RequestBody BookDto bookDto) {
+        bookCrudService.updateBook(id, bookDto);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        bookCrudService.deleteBook(id);
+    }
 }
